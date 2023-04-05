@@ -1,0 +1,251 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run.
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches:
+      - 'main'
+      - 'devel'
+  pull_request:
+    types:
+      - opened
+    branches: 
+      - 'main'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build-AsFem:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # Runs a single command using the runners shell
+      - name: show repository information
+        run: echo ${{github.event.repository.name}}
+      - name: show CPU information
+        run: cat /proc/cpuinfo
+      - name: show file structure
+        run: |
+          echo "*********************************************************************"
+          echo "*** Current path is:"
+          pwd
+          echo "*********************************************************************"
+          echo "*** Current folders are:"
+          ls -l
+      - name: check gcc/gfortran/cmake version
+        run: |
+          echo "*********************************************************************"
+          echo "*** Check the version of gnu-c,c++,fortran compiler"
+          echo "*********************************************************************"
+          gcc --version
+          g++ --version
+          gfortran --version
+          cmake --version
+          echo "*********************************************************************"
+          echo "*** Version check is done !"
+          echo "*********************************************************************"
+      - name: create temp folder and lib folder
+        run: |
+          echo "*********************************************************************"
+          echo "*** Current folder structure is:"
+          ls -l
+          echo "*********************************************************************"
+          echo "*** Now we start to create folder"
+          echo "*********************************************************************"
+          mkdir temp && mkdir AsFemLibs
+          ls -l
+          cd AsFemLibs && mkdir openmpi && mkdir petsc
+          pwd
+          echo "*********************************************************************"
+          echo "*** Now we have the following folders:"
+          ls -l
+      - name: download openmpi
+        run: |
+          cd temp
+          ls -l
+          curl -L -O https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.5.tar.gz
+          echo "******************************************************"
+          echo "*** Openmpi 4.1.5 has been downloaded !"
+          echo "******************************************************"
+          ls -l
+      - name: compile and install openmpi
+        run: |
+          echo "******************************************************"
+          echo "*** Start to compile openmpi-4.1.5"
+          echo "******************************************************"
+          cd temp
+          tar -xf openmpi-4.1.5.tar.gz
+          cd openmpi-4.1.5
+          ./configure --prefix=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi
+          make -j8
+          echo "******************************************************"
+          echo "*** Make -j8 is done for openmpi-4.1.5"
+          echo "******************************************************"
+          make install
+          echo "******************************************************"
+          echo "*** Make install is done for openmpi-4.1.5"
+          echo "******************************************************"
+      - name: check openmpi version
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi/bin
+          echo "******************************************************"
+          echo "*** Now we check the version of mpicc and mpicxx"
+          ./mpicc --version
+          ./mpicxx --version
+          ./mpirun --version
+          echo "******************************************************"
+      - name: downlaod PETSc
+        run: |
+          echo "******************************************************"
+          echo "*** download petsc"
+          echo "******************************************************"
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/temp
+          curl -L -O  https://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-3.18.6.tar.gz
+          tar -xf petsc-lite-3.18.6.tar.gz
+      - name: compile and install PETSc
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/temp/petsc-3.18.6
+          echo "******************************************************"
+          echo "*** Configure petsc ..."
+          echo "******************************************************"
+          ./configure \
+          --prefix=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/petsc \
+          --with-debugging=0 \
+          --with-ssl=0 \
+          --with-pic=1 \
+          --with-openmp=0 \
+          --with-mpi-dir=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi \
+          --with-shared-libraries=1 \
+          --with-fortran-bindings=0 \
+          --with-sowing=0 \
+          --download-fblaslapack=1 \
+          --download-scalapack=1 \
+          --download-mumps=1 \
+          COPTFLAGS='-fPIC -O3 ' \
+          CXXOPTFLAGS='-fPIC -O3 ' \
+          FOPTFLAGS='-fPIC -O3 ' \
+          PETSC_DIR=`pwd`
+          echo "******************************************************"
+          echo "*** Make petsc ..."
+          echo "******************************************************"
+          make PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/temp/petsc-3.18.6 PETSC_ARCH=arch-linux-c-opt all
+          echo "******************************************************"
+          echo "*** Install petsc ..."
+          echo "******************************************************"
+          make PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/temp/petsc-3.18.6 PETSC_ARCH=arch-linux-c-opt install
+      - name: compile AsFem
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}
+          echo "*********************************************************************"
+          echo "*** Setup mpi and petsc bash profile"
+          echo "*********************************************************************"
+          export MPI_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi
+          export PATH=$PATH:$MPI_DIR/bin
+          export CC=$MPI_DIR/bin/mpicc
+          export CXX=$MPI_DIR/bin/mpicxx
+          export F90=$MPI_DIR/bin/mpif90
+          export F77=$MPI_DIR/bin/mpif77
+          export OMP_NUM_THREADS=1
+          export PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/petsc
+          export C_INCLUDE_PATH=$mpi/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=$mpi/include:$CPLUS_INCLUDE_PATH
+          export FPATH=$mpi/include:$FPATH
+          export MANPATH=$mpi/share/man:$MANPATH
+          export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+          cmake CMakeLists.txt -DCMAKE_BUILD_TYPE=Release
+          echo "*********************************************************************"
+          echo "*** Make AsFem"
+          echo "*********************************************************************"
+          make -j8
+          echo "*********************************************************************"
+          echo "*** AsFem has been successuflly installed !"
+          echo "*********************************************************************"
+          ls
+      - name: run AsFem test script
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}
+          echo "*********************************************************************"
+          echo "*** Start to run AsFem autotest"
+          echo "*********************************************************************"
+          ls
+          export MPI_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi
+          export PATH=$PATH:$MPI_DIR/bin
+          export CC=$MPI_DIR/bin/mpicc
+          export CXX=$MPI_DIR/bin/mpicxx
+          export F90=$MPI_DIR/bin/mpif90
+          export F77=$MPI_DIR/bin/mpif77
+          export OMP_NUM_THREADS=1
+          export PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/petsc
+          export C_INCLUDE_PATH=$mpi/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=$mpi/include:$CPLUS_INCLUDE_PATH
+          export FPATH=$mpi/include:$FPATH
+          export MANPATH=$mpi/share/man:$MANPATH
+          export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+          python3 scripts/AutoTest.py -n 2
+      - name: run step2-2d in parallel
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/examples/tutorial
+          ls
+          export MPI_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi
+          export PATH=$PATH:$MPI_DIR/bin
+          export CC=$MPI_DIR/bin/mpicc
+          export CXX=$MPI_DIR/bin/mpicxx
+          export F90=$MPI_DIR/bin/mpif90
+          export F77=$MPI_DIR/bin/mpif77
+          export OMP_NUM_THREADS=1
+          export PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/petsc
+          export C_INCLUDE_PATH=$mpi/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=$mpi/include:$CPLUS_INCLUDE_PATH
+          export FPATH=$mpi/include:$FPATH
+          export MANPATH=$mpi/share/man:$MANPATH
+          export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+          mpirun -np 2 /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/bin/asfem -i step2-2d.json
+      - name: run step2-3d in parallel
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/examples/tutorial
+          ls
+          export MPI_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi
+          export PATH=$PATH:$MPI_DIR/bin
+          export CC=$MPI_DIR/bin/mpicc
+          export CXX=$MPI_DIR/bin/mpicxx
+          export F90=$MPI_DIR/bin/mpif90
+          export F77=$MPI_DIR/bin/mpif77
+          export OMP_NUM_THREADS=1
+          export PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/petsc
+          export C_INCLUDE_PATH=$mpi/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=$mpi/include:$CPLUS_INCLUDE_PATH
+          export FPATH=$mpi/include:$FPATH
+          export MANPATH=$mpi/share/man:$MANPATH
+          export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+          mpirun -np 2 /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/bin/asfem -i step2-3d.json
+      - name: run step3-2d in parallel
+        run: |
+          cd /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/examples/tutorial
+          export MPI_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/openmpi
+          export PATH=$PATH:$MPI_DIR/bin
+          export OMP_NUM_THREADS=1
+          export PETSC_DIR=/home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/AsFemLibs/petsc
+          export C_INCLUDE_PATH=$mpi/include:$C_INCLUDE_PATH
+          export CPLUS_INCLUDE_PATH=$mpi/include:$CPLUS_INCLUDE_PATH
+          export FPATH=$mpi/include:$FPATH
+          export MANPATH=$mpi/share/man:$MANPATH
+          export LD_LIBRARY_PATH=$mpi/lib:$LD_LIBRARY_PATH
+          mpirun -np 2 /home/runner/work/${{github.event.repository.name}}/${{github.event.repository.name}}/bin/asfem -i step3-2d.json
+      - name: clean all folders and files
+        run: |
+          rm -rf temp
+          rm -rf AsFemLibs
+          python3 scripts/Clean.py
+          ls -l
+          echo "*********************************************************************"
+          echo "*** All the files are clean !"
+          echo "*********************************************************************"
