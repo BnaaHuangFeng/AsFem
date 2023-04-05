@@ -153,7 +153,7 @@ bool InputSystem::readInputFile(Mesh &t_mesh,DofHandler &t_dofhandler,
         }
     }
     
-    if(m_json.contains("shapefuns")){
+    if(m_json.contains("shapefuns")){ // hf: normally json doesn't contain shapefuns block.
         // read the shapefuns block
         if(!HasMeshBlock){
             MessagePrinter::printErrorTxt("you must define the 'mesh' block before your 'shapefuns' block, "
@@ -239,7 +239,7 @@ bool InputSystem::readInputFile(Mesh &t_mesh,DofHandler &t_dofhandler,
     }
     
     if(m_json.contains("nlsolver")){
-        // read the bcs block
+        // read the nlsolver block
         if(!HasMeshBlock){
             MessagePrinter::printErrorTxt("you must define the 'mesh' block before your 'nlsolver' block, "
                                           "please check your input file");
@@ -262,7 +262,7 @@ bool InputSystem::readInputFile(Mesh &t_mesh,DofHandler &t_dofhandler,
     }
 
     t_postprocess.setInputFileName(m_inputfile_name);
-    if(m_json.contains("postprocess")){
+    if(m_json.contains("postprocess")){// hf: normally json doesn't contain shapefuns block.
         // read the bcs block
         if(!HasMeshBlock){
             MessagePrinter::printErrorTxt("you must define the 'mesh' block before your 'postprocess' block, "
@@ -286,7 +286,7 @@ bool InputSystem::readInputFile(Mesh &t_mesh,DofHandler &t_dofhandler,
     }
     
     if(m_json.contains("timestepping")){
-        // read the bcs block
+        // read the timestepping block
         if(!HasMeshBlock){
             MessagePrinter::printErrorTxt("you must define the 'mesh' block before your 'timestepping' block, "
                                           "please check your input file");
@@ -338,7 +338,7 @@ bool InputSystem::readInputFile(Mesh &t_mesh,DofHandler &t_dofhandler,
     }
     
     if(m_json.contains("job")){
-        // read the bcs block
+        // read the job block
         if(!HasMeshBlock){
             MessagePrinter::printErrorTxt("you must define the 'mesh' block before your 'job' block, "
                                           "please check your input file");

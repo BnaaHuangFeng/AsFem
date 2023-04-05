@@ -111,18 +111,37 @@ public:
 private:
     /**
      * read the mesh block from json file
+     * set Mesh -> MeshData ->  m_nx/y/z  m_x/y/zmin  m_x/y/zmax
+     *                      ->  MeshType {m_bulkelmt_type  m_lineelmt_type  m_surfaceelmt_type}
+     *                      ->  int {m_order  m_bulkelmts  m_lineelmts  m_elements  m_nodes
+     *                      ->       m_nodesperbulkelmt  m_nodesperlineelmt  m_xxxelmt_vtktype m_nodal_phygroups
+     *                      ->  vector<double> {m_nodecoords0  m_nodecoords} m_nodecoords=m_nodecoords0 (value)
+     *                      ->  vector<vector<int>>{
+     *                          m_bulkelmt_connectivity
+     *                          } 
+     *                      ->  vector<pair<string,int>> m_nodephygroup_name2phyidvec (ind sf0)
+     *                      ->  vector<string> m_nodephygroup_phynamevec (ind sf0)
+     *                      ->  vector<int> m_nodephygroup_phyidvec (ind sf0)
+     *                      ->  vector<pair<int,string>> m_nodephygroup_phyid2namevec (ind sf0)
+     *                      ->  m_nodephygroup_name2nodeidvec
+     *                      ->  MeshData's all member (physet,dim,size,coords,coords0,element type
+     * bulk element's node conn and physet's BC element node conn)(not element volume)  
      * @param t_json the json parse which contains 'mesh'
      * @param t_mesh the mesh class
      */
     bool readMeshBlock(nlohmann::json &t_json,Mesh &t_mesh);
     /**
      * read the dofs block from json file
+     * set m_dof_namelist  m_maxdofs_pernode  m_dof_idlist
      * @param t_json the json parse which contains 'dofs'
      * @param t_dofhandler the dofHandler class
      */
     bool readDofsBlock(nlohmann::json &t_json,DofHandler &t_dofhandler);
     /**
      * read the element block from json file
+     * set ElmtSystem -> vector<ElmtBlock> -> ElmtBlock -> m_elmttype, m_elmt_blockname, 
+     * element block's dof name id, json class for material paramters, 
+     * the physical name vector of the domain for current element blk
      * @param t_json the json parse which contains 'elements'
      * @param t_mesh the mesh class
      * @param t_dofhandler the dofHandler class
@@ -131,6 +150,7 @@ private:
     bool readElmtsBlock(nlohmann::json &t_json,const Mesh &t_mesh,const DofHandler &t_dofhandler,ElmtSystem &t_elmtsystem);
     /**
      * read the qpoint block
+     * set FE-> bulk, surface, line QPoint -> type,dim,order and mesh type
      * @param t_json the json parse which contains 'elements'
      * @param t_mesh the mesh class
      * @param t_fe the fe class
@@ -138,6 +158,7 @@ private:
     bool readQPointBlock(nlohmann::json &t_json,const Mesh &t_mesh,FE &t_fe);
     /**
      * read the shape function block
+     * hf: There is no correspond doc about shape function block, it's seems for used defined?
      * @param t_json the json parse which contains 'elements'
      * @param t_mesh the mesh class
      * @param t_fe the fe class
@@ -145,6 +166,8 @@ private:
     bool readShapeFunBlock(nlohmann::json &t_json,const Mesh &t_mesh,FE &t_fe);
     /**
      * read the boundary condition blocks
+     * set BCSystem -> vector<BCBlock> -> BCBlock:id, name, type, preset dof's type name & id,
+     * preset bcvalue, boundary phyname list.
      * @param t_json the json parse which contains 'elements'
      * @param t_mesh the mesh class
      * @param t_dofhandler the dofHandler class
@@ -161,31 +184,39 @@ private:
     bool readICsBlock(nlohmann::json &t_json,const Mesh &t_mesh,const DofHandler &t_dofhandler,ICSystem &t_icsystem);
     /**
      * read the projection blocks
+     * set ProjectionSystem's proj_type.
+     * ProjectionSystem -> ProjectionData: num of types of material data,
+     * vector<string> m_XXXXmate_namelist
      * @param t_json the json parse which contains 'elements'
      * @param t_dofhandler the dofHandler class
      * @param t_projsystem the projection system class
      */
     bool readProjectionBlock(nlohmann::json &t_json,const DofHandler &t_dofhandler,ProjectionSystem &t_projsystem);
     /**
-     * read the nonlinear solver blocks
+     * read the nonlinear solver blocks.
+     * set NonlinearSolver -> NonlinearSolverBlock: nlsolver type, lsolver type, pc type, maxiter num, tolerance
      * @param t_json the json parse which contains 'elements'
      * @param t_nlsolver the nonlinear solver class
      */
     bool readNLSolverBlock(nlohmann::json &t_json,NonlinearSolver &t_nlsolver);
     /**
      * read the time stepping blocks
+     * set time TimeStepping -> TimeSteppingData: stepping type, ifadaptive, opt_iters, dt0, dtmax, dtmin,
+     * finaltime, growth factor, cutback factor
      * @param t_json the json parse which contains 'elements'
      * @param t_timestepping the time stepping solver class
      */
     bool readTimeSteppingBlock(nlohmann::json &t_json,TimeStepping &t_timestepping);
     /**
-     * read the output solver blocks
+     * read the output system blocks
+     * set OutputSystem -> ResultFileFormat, output interval number.
      * @param t_json the json parse which contains 'elements'
      * @param t_output the output system class
      */
     bool readOutputBlock(nlohmann::json &t_json,OutputSystem &t_output);
     /**
      * read the postprocessor blocks
+     * hf: There is no correspond doc about postprocessor block.
      * @param t_json the json parse which contains 'elements'
      * @param t_mesh the mesh class
      * @param t_dofhandler the dofhandler class
@@ -194,6 +225,7 @@ private:
     bool readPostprocessBlock(nlohmann::json &t_json,const Mesh &t_mesh,const DofHandler &t_dofhandler,Postprocessor &t_postprocessor);
     /**
      * read the fe job block
+     * set FEJobBlock -> cal type, debug mode
      * @param t_json the json parse which contains 'elements'
      * @param t_jobblock the nonlinear solver class
      */

@@ -45,9 +45,9 @@ struct MeshData{
     double m_zmin;/**< z-min of the regular domain */
     double m_zmax;/**< z-max of the regular domain */
     int m_order;/**< order of the mesh */
-    vector<double> m_nodecoords0;/**< vector for the coordinates of nodes, undeformed ! */
-    vector<double> m_nodecoords;/**< vector for the coordinates of nodes, deformed one! */
-    vector<vector<int>> m_bulkelmt_connectivity;/**< stores the connectivity of bulk elements */
+    vector<double> m_nodecoords0;/**< vector for the coordinates of nodes, undeformed. global data{N1D1,N1D2,N1D3,N2D1...} */
+    vector<double> m_nodecoords;/**< vector for the coordinates of nodes, deformed one! global data{N1D1,N1D2,N1D3,N2D1...} */
+    vector<vector<int>> m_bulkelmt_connectivity;/**< stores the connectivity of bulk elements (index: elemt ID in set sf 0)*/
     vector<double>      m_bulkelmt_volume;/**< stores the volume of each bulk element */
     vector<vector<int>> m_pointelmt_connectivity;/**< stores the connectivity of line elements */
     vector<double>      m_pointelmt_volume;/**< stores the volume of each line element */
@@ -71,7 +71,7 @@ struct MeshData{
     vector<int>                              m_phygroup_dimvec;/**< the vector for the dim of each phy group */
     vector<string>                           m_phygroup_phynamevec;/**< the vector stores the name of each phy group */
     vector<int>                              m_phygroup_phyidvec;/**< the vector of physical id for each phy group */
-    vector<int>                              m_phygroup_elmtnumvec;/**< the vector for the element number of each phy group */
+    vector<int>                              m_phygroup_elmtnumvec;/**< the vector for the member number of each phy group */
     vector<int>                              m_phygroup_nodesnumperelmtvec;/**< the vector for the nodes number of the element in each phy group */
     vector<pair<string,vector<vector<int>>>> m_phygroup_name2elmtconnvec;/**< vector for the name to element connectivity map */
     vector<pair<string,vector<int>>>         m_phygroup_name2bulkelmtidvec;/** vector for the name to bulk element id map */
