@@ -43,7 +43,9 @@ void FEProblem::initFEProblem(int args,char *argv[]){
     if(m_inputSystem.isReadOnly()) return;
 
     //***************************************
-    // for dofs init
+    // for dofs init 
+    // set dofhandler -> total number of elmts, nodes, dofs data,
+    // allocate memory for map of nodal and elemental local dof data id 2 global dof data id. 
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to create dofs map ...");
@@ -54,6 +56,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for elmt system init
+    // assign each elmt element block (m_elemental_elmtblock_id) 
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the Element system ...");
@@ -63,6 +66,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for bc system init
+    // allocate room for BCSystem -> m_nodes0,m_nodes LocalElmtInfo, m_localR, m_localK
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the BC system ...");
@@ -81,6 +85,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for FE space init
+    // allocate room for shapefun (data are still 0), set qpoint (specify data)
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the FE space ...");
@@ -90,6 +95,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for FE system init
+    // preallocate BulkFESystem's member, but data are 0 now.
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the FE system ...");
@@ -99,6 +105,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for Equation system init
+    // preallocate m_rhs & m_amatrix (datas are 0)
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the Equation system ...");
@@ -111,6 +118,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for Solution system init
+    // preallocate solution datas (all dofs) & material datas(all gauss points) (datas are 0)
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the Solution system ...");
@@ -120,6 +128,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for Projection system init
+    // preallocate solution datas (a node) & material datas(all nodes) (datas are 0)
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the Projection system ...");
@@ -129,6 +138,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for Nonlinear solver system init
+    // set SNES, KSP, PC
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the NL solver ...");
@@ -138,6 +148,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for Postprocess system init
+    // preallocate Nodes (in a element) (datas are 0)
     //***************************************
     m_timer.startTimer();
     MessagePrinter::printNormalTxt("Start to initialize the postprocessor ...");
@@ -147,6 +158,7 @@ void FEProblem::initFEProblem(int args,char *argv[]){
 
     //***************************************
     // for fe control init
+    // set default ctan, t, dt, timesteppingtype, startstep, finalstep...
     //***************************************
     m_fectrlinfo.init();
     m_fectrlinfo.IsDebug=m_jobblock.m_isdebug;

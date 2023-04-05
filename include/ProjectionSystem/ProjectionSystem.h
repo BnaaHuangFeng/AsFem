@@ -298,8 +298,8 @@ private:
     Nodes m_nodes;/**< for the nodal coordinates of current bulk element (current configuration) */
     Nodes m_nodes0;/**< for the nodal coordinates of current bulk element (reference configuration) */
 
-    LocalElmtInfo m_local_elmtinfo;/**< for the local element information */
-    LocalElmtSolution m_local_elmtsoln;/**< for the local element solution */
+    LocalElmtInfo m_local_elmtinfo;/**< for the local element information of a node.*/
+    LocalElmtSolution m_local_elmtsoln;/**< for the local element solution of a node.*/
 
     PetscMPIInt m_rank;/**< for the rank id of current cpu */
     PetscMPIInt m_size;/**< for the size of total cpus */

@@ -32,6 +32,7 @@
 
 /**
  * This class implement the gauss point generation and management
+ * mainly store qpoint's weight & coords of specified mesh type
  */
 class QPoint:public QPoint1DGenerator,
              public QPoint2DGenerator,
