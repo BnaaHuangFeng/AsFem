@@ -154,7 +154,7 @@ private:
     vector<int> m_elmtconn;/**< for local element's connectivity */
     vector<int> m_elmtdofsid;/**< for local elemental nodes' gloabl ids, start from 0 (Hf: from 1)*/
     int         m_subelmt_dofs;/**< for the dofs number of each sub element */
-    vector<int> m_subelmtdofsid;/**< for local sub-elemental dof's type ids, start from 0 (Hf: from 1)*/
+    vector<int> m_subelmtdofsid;/**< for local sub-elemental dof' type ids, start from 0 (Hf: from 1)*/
 
     double m_max_k_coeff;/**< the max(absolute) value of current K matrix */
 

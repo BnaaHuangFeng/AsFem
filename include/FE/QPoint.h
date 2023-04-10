@@ -150,7 +150,7 @@ public:
         return m_coords[(i-1)*(1+m_dim)+0];
     }
     /**
-     * get the number of total qpoints
+     * get the number of total qpoints of a bulk element
      */
     inline int getQPointsNum()const{return m_ngp;}
     /**

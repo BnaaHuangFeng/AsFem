@@ -205,7 +205,7 @@ public:
         return m_elmt_dofids[i-1][j-1]-1;
     }
     /**
-     * get i-th elmt's dofs
+     * get i-th elmt's global dof ids
      * @param i integer for i-th elmt
      * @param elmtdofs vector for current element's dof ids
      */
