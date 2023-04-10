@@ -191,5 +191,5 @@ private:
     int m_order;/**< accuracy order of gauss point integration */
     int m_ngp;/**< number of total gauss points */
     int m_dim;/**< the dimension of current qpoints, it should be 1, 2, or 3 */
-    vector<double> m_coords;/**< the coordinates and weight of all qpoints */
+    vector<double> m_coords;/**< the natural coordinates and weight of all qpoints */
 };

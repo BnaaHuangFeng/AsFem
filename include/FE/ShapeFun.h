@@ -136,7 +136,7 @@ private:
     int m_dim;/**< dimension of shape function, i.e., 1d, 2d, and 3d. */
     int m_funs;/**< number of shape functions */
     vector<double> m_shpvals;/**< vector for the shape function values */
-    vector<Vector3d> m_shpgrads;/**< vector for the shape function derivatives */
-    double m_jacdet;/**< the jacobian's determite */
+    vector<Vector3d> m_shpgrads;/**< vector for the shape function derivatives to undeformed config (not natural config)*/
+    double m_jacdet;/**< the jacobian's determite; jacobian is dx0/dr*/        
 
 };
