@@ -31,7 +31,7 @@ void ShapeFun2D::calc2DShapeFun(const MeshType &t_meshtype,
         m_nodes=6;
     }
     else if(t_meshtype==MeshType::QUAD4){
-        ShapeFun2DQuad4::calc2DShapeValsAndDerivatives(xi,eta,t_vals,t_ders);
+        ShapeFun2DQuad4::calc2DShapeValsAndDerivatives(xi,eta,t_vals,t_ders)ad;
         m_nodes=4;
     }
     else if(t_meshtype==MeshType::QUAD8){
