@@ -75,10 +75,10 @@ private:
 private:
     double m_Psi;/**< the elastic strain energy density */
     Rank2Tensor m_devStress,m_devStrain;/**< for the deviatoric part of stress and strain */
-    Rank2Tensor m_gradU;/**< the displacement gradient */
+    Rank2Tensor m_gradU;/**< the displacement gradient (Hf: gradient is in ref config in current implement) */
     Rank2Tensor m_F,m_I;/**< for the deformation tensor and identity tensor */
     Rank2Tensor m_C;/**< for the right Cauchy-Green tensor */
-    Rank2Tensor m_strain,m_pk2_stress,m_stress;/**< local stress and strain tensor */
+    Rank2Tensor m_strain,m_pk2_stress,m_stress;/**< local stress and strain tensor. here the strain is E, the Lagrangian-Green strain*/
     Rank4Tensor m_jacobian,m_I4Sym;/**< local jacobian tensor */
 
 };

@@ -60,9 +60,9 @@ public:
     void releaseMemory();
 
 public:
-    ShapeFun m_bulk_shp;/**< shapefun for the bulk element */
-    ShapeFun m_surface_shp;/**< shapefun for the surface element (for 3d case) */
-    ShapeFun m_line_shp;/**< shapefun for the line element (for 2d case) */
+    ShapeFun m_bulk_shp;/**< shapefun for a qpoint of the bulk element */
+    ShapeFun m_surface_shp;/**< shapefun for a qpoint of  the surface element (for 3d case) */
+    ShapeFun m_line_shp;/**< shapefun for a qpoint of the line element (for 2d case) */
 
     QPoint m_bulk_qpoints;/**< gauss integration points for the bulk element */
     QPoint m_surface_qpoints;/**< gauss integration points for the surface element */

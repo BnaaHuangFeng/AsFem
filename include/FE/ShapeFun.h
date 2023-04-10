@@ -21,7 +21,8 @@
 #include "FE/ShapeFunType.h"
 
 /**
- * This class implement the calculation and data storage of general shape functions
+ * This class implement the calculation and data storage of general shape functions of a specific element
+ * including number of shapefun, shape function derivatives, shape function derivatives, the jacobian's determinate
  */
 class ShapeFun:public ShapeFun1D,
                public ShapeFun2D,
@@ -37,7 +38,8 @@ public:
     //*** for shape function calculation
     //***************************************************
     /**
-     * shape function calc for general case, you can set eta=zeta=0 for 1d case, and zeta=0 for 2d case
+     * shape function calc for general case, you can set eta=zeta=0 for 1d case, and zeta=0 for 2d case,
+     * including m_shpvals, m_shpgrads, m_jacdet
      * @param xi f\$\xi f\$ for local coordinates
      * @param eta f\$\eta f\$ for local coordinates
      * @param zeta f\$\zeta f\$ for local coordinates

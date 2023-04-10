@@ -546,7 +546,7 @@ bool Lagrange2DMeshGenerator::generateMesh(const MeshType &t_meshtype,MeshData &
     //***********************************************
     // set up the node set physical group information
     //***********************************************
-    t_meshdata.m_nodal_phygroups=4;
+    t_meshdata.m_nodal_phygroups=4+1;   // hf: for test
     t_meshdata.m_nodephygroup_phynamevec.resize(t_meshdata.m_nodal_phygroups);
     t_meshdata.m_nodephygroup_phyidvec.resize(t_meshdata.m_nodal_phygroups);
     t_meshdata.m_nodephygroup_name2nodeidvec.resize(t_meshdata.m_nodal_phygroups);
@@ -554,30 +554,33 @@ bool Lagrange2DMeshGenerator::generateMesh(const MeshType &t_meshtype,MeshData &
     t_meshdata.m_nodephygroup_name2nodeidvec[1]=make_pair("right",  rightnodes);
     t_meshdata.m_nodephygroup_name2nodeidvec[2]=make_pair("bottom",bottomnodes);
     t_meshdata.m_nodephygroup_name2nodeidvec[3]=make_pair("top",      topnodes);
-    
+    t_meshdata.m_nodephygroup_name2nodeidvec[4]=make_pair("origin",      vector<int>(1,1));
     //*** phy id vector
     t_meshdata.m_nodephygroup_phyidvec[0]=10001;
     t_meshdata.m_nodephygroup_phyidvec[1]=20001;
     t_meshdata.m_nodephygroup_phyidvec[2]=30001;
     t_meshdata.m_nodephygroup_phyidvec[3]=40001;
+    t_meshdata.m_nodephygroup_phyidvec[4]=50001;
     //*** phy name vector
     t_meshdata.m_nodephygroup_phynamevec[0]="left";
     t_meshdata.m_nodephygroup_phynamevec[1]="right";
     t_meshdata.m_nodephygroup_phynamevec[2]="bottom";
     t_meshdata.m_nodephygroup_phynamevec[3]="top";
+    t_meshdata.m_nodephygroup_phynamevec[4]="origin";
     //*** for phy name to id map
     t_meshdata.m_nodephygroup_name2phyidvec.resize(t_meshdata.m_nodal_phygroups);
     t_meshdata.m_nodephygroup_name2phyidvec[0]=make_pair("left",  10001);
     t_meshdata.m_nodephygroup_name2phyidvec[1]=make_pair("right", 20001);
     t_meshdata.m_nodephygroup_name2phyidvec[2]=make_pair("bottom",30001);
     t_meshdata.m_nodephygroup_name2phyidvec[3]=make_pair("top",   40001);
+    t_meshdata.m_nodephygroup_name2phyidvec[3]=make_pair("origin",   50001);
     //*** for phyid to name map
     t_meshdata.m_nodephygroup_phyid2namevec.resize(t_meshdata.m_nodal_phygroups);
     t_meshdata.m_nodephygroup_phyid2namevec[0]=make_pair(10001  ,"left");
     t_meshdata.m_nodephygroup_phyid2namevec[1]=make_pair(20001 ,"right");
     t_meshdata.m_nodephygroup_phyid2namevec[2]=make_pair(30001,"bottom");
     t_meshdata.m_nodephygroup_phyid2namevec[3]=make_pair(40001   ,"top");
-
+    t_meshdata.m_nodephygroup_phyid2namevec[3]=make_pair(50001   ,"origin");
     m_mesh_generated=true;
 
     return m_mesh_generated;

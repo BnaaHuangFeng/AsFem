@@ -41,8 +41,8 @@ void ProjectionSystem::executeProjection(const Mesh &t_mesh,const DofHandler &t_
     t_solution.m_u_older.makeGhostCopy();
 
     // for the velocity and acceleration
-    t_solution.m_v.makeGhostCopy();
-    t_solution.m_a.makeGhostCopy();
+    t_solution.m_v.makeGhostCopy();     // hf: no need in static analysis
+    t_solution.m_a.makeGhostCopy();     // hf: no need in static analysis
 
     MPI_Comm_rank(PETSC_COMM_WORLD,&m_rank);
     MPI_Comm_size(PETSC_COMM_WORLD,&m_size);

@@ -103,7 +103,7 @@ void BulkFESystem::formBulkFE(const FECalcType &t_calctype,const double &t,const
             JxW=J*w;
 
             m_local_elmtinfo.m_gpCoords0=0.0;
-            for(int i=1;i<=m_bulkelmt_nodesnum;i++){
+            for(int i=1;i<=m_bulkelmt_nodesnum;i++){// if m_gpCoords0 will be updated?
                 m_local_elmtinfo.m_gpCoords0(1)+=t_fe.m_bulk_shp.shape_value(i)*m_nodes0(i,1);
                 m_local_elmtinfo.m_gpCoords0(2)+=t_fe.m_bulk_shp.shape_value(i)*m_nodes0(i,2);
                 m_local_elmtinfo.m_gpCoords0(3)+=t_fe.m_bulk_shp.shape_value(i)*m_nodes0(i,3);
@@ -121,7 +121,7 @@ void BulkFESystem::formBulkFE(const FECalcType &t_calctype,const double &t,const
             }
 
             if(t_calctype!=FECalcType::INITMATERIAL){
-                // get the old material properties on each qpoint
+                // get the old material properties on each qpoint // Hf!: delete it because t_solutionsystem's material is empty at beginning.
                 t_matesystem.m_materialcontainer_old.getScalarMaterialsRef()=t_solutionsystem.m_qpoints_scalarmaterials[(e-1)*qpoints_num+qpInd-1];
                 t_matesystem.m_materialcontainer_old.getVectorMaterialsRef()=t_solutionsystem.m_qpoints_vectormaterials[(e-1)*qpoints_num+qpInd-1];
                 t_matesystem.m_materialcontainer_old.getRank2MaterialsRef()=t_solutionsystem.m_qpoints_rank2materials[(e-1)*qpoints_num+qpInd-1];
@@ -139,9 +139,9 @@ void BulkFESystem::formBulkFE(const FECalcType &t_calctype,const double &t,const
                 subelmtid=t_elmtsystem.getIthBulkElmtJthSubElmtID(e,subelmt);
                 m_subelmt_dofs=static_cast<int>(t_elmtsystem.getIthBulkElmtBlock(subelmtid).m_dof_ids.size());
                 m_local_elmtinfo.m_dofsnum=m_subelmt_dofs;
-                
+                ElmtBlock currentelmtblock=t_elmtsystem.getIthBulkElmtBlock(subelmtid);
                 for(int i=0;i<m_subelmt_dofs;i++){
-                    m_subelmtdofsid[i]=t_elmtsystem.getIthBulkElmtBlock(subelmtid).m_dof_ids[i];// start from 1
+                    m_subelmtdofsid[i]=currentelmtblock.m_dof_ids[i];// start from 1
 
                     //*********************************************************************
                     //*** prepare physical quantities on each integration point
