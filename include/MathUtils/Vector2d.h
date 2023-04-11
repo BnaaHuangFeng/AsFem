@@ -19,7 +19,6 @@
 #include <cmath>
 #include <limits>
 #include "Utils/MessagePrinter.h"
-
 using std::sqrt;
 using std::abs;
 using std::fill;

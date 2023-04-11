@@ -46,7 +46,9 @@ void ShapeFun2D::calc2DShapeFun(const MeshType &t_meshtype,
         MessagePrinter::printErrorTxt("unsupported meshtype in calc2DShapeFun of ShapeFun2D.cpp");
         MessagePrinter::exitAsFem();
     }
-
+    if(flag){
+        
+    }
     if(flag){
         // calculate the derivatives on global coordinates
         m_dxdxi =0.0;m_dydxi =0.0;m_dzdxi =0.0;
