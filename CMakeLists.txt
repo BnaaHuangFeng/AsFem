@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21.0)
+cmake_minimum_required(VERSION 3.16.3)
 project(AsFem)
 
 set(CMAKE_CXX_STANDARD 17)
