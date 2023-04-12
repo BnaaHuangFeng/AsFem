@@ -37,7 +37,7 @@ public:
     /**
      * @param val the scalar value
     */
-    Vector3d(const double &val);
+    Vector3d(const double val);
     /**
      * @param a the right hand vector
     */
@@ -242,7 +242,9 @@ public:
         return sum;
     }
 
-
+    inline void print()const{
+        PetscPrintf(PETSC_COMM_WORLD,"*** %14.6e ,%14.6e, %14.6e***\n",(*this)(1),(*this)(2),(*this)(3));
+    }
 private:
     double m_vals[3];/**< components vector, its size is always 3! */
 };

@@ -20,7 +20,7 @@
 Rank2Tensor::Rank2Tensor(){
     m_vals.resize(9,0.0);
 }
-Rank2Tensor::Rank2Tensor(const double &val){
+Rank2Tensor::Rank2Tensor(const double val){
     m_vals.resize(9,val);
 }
 Rank2Tensor::Rank2Tensor(const Rank2Tensor &a){

@@ -25,11 +25,11 @@ VectorXd::VectorXd(const VectorXd &a){
     m_vals=a.m_vals;
     m_m=a.m_m;
 }
-VectorXd::VectorXd(const int &m){
+VectorXd::VectorXd(const int m){
     m_m=m;
     m_vals.resize(m,0.0);
 }
-VectorXd::VectorXd(const int &m,const double &val){
+VectorXd::VectorXd(const int m,const double val){
     m_m=m;
     m_vals.resize(m,val);
 }

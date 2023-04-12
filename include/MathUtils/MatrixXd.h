@@ -36,15 +36,15 @@ public:
      */
     MatrixXd();
     MatrixXd(const MatrixXd &a);
-    MatrixXd(const int &m,const int &n);
-    MatrixXd(const int &m,const int &n,const double &val);
+    MatrixXd(const int m,const int n);
+    MatrixXd(const int m,const int n,const double val);
     
     /**
      * Resize the matrix, the memory is reallocated, the matrix is set to zero by default
      * @param m integer, the size of the 1st dimention
      * @param n integra, the size of the 2nd dimention
      */
-    void resize(const int &m,const int &n){
+    void resize(const int m,const int n){
         m_vals.resize(m*n,0.0);m_m=m;m_n=n;m_mn=m*n;
     }
 
@@ -54,7 +54,7 @@ public:
      * @param n integra, the size of the 2nd dimention
      * @param val the initial value for the resized matrix
      */
-    void resize(const int &m,const int &n,const double &val){
+    void resize(const int m,const int n,const double val){
         m_vals.resize(m*n,val);m_m=m;m_n=n;m_mn=m*n;
     }
 
@@ -85,7 +85,7 @@ public:
      * @param i the index of the 1st dimension, it should start from 1, not 0!!!
      * @param j the index of the 2nd dimension, it should start from 1, not 0!!!
      */
-    inline double& operator()(const int &i,const int &j){
+    inline double& operator()(const int i,const int j){
         if(i<1||i>m_m){
             MessagePrinter::printErrorTxt("i= "+to_string(i)+" is out of range(m="+to_string(m_m)+") in MatrixXd.h");
             MessagePrinter::exitAsFem();
@@ -101,7 +101,7 @@ public:
      * @param i the index of the 1st dimension, it should start from 1, not 0!!!
      * @param j the index of the 2nd dimension, it should start from 1, not 0!!!
      */
-    inline double operator()(const int &i,const int &j)const{
+    inline double operator()(const int i,const int j)const{
         if(i<1||i>m_m){
             MessagePrinter::printErrorTxt("i= "+to_string(i)+" is out of range(m="+to_string(m_m)+") in MatrixXd.h");
             MessagePrinter::exitAsFem();
@@ -116,7 +116,7 @@ public:
      * The [] operator, the data of our matrix is just simple vector in 1D
      * @param i the index of the data vector element, it should start from 1, not 0!!!
      */
-    inline double& operator[](const int &i){
+    inline double& operator[](const int i){
         if(i<1||i>m_mn){
             MessagePrinter::printErrorTxt("i= "+to_string(i)+" is out of range(mn="+to_string(m_mn)+") in MatrixXd.h");
             MessagePrinter::exitAsFem();
@@ -127,7 +127,7 @@ public:
      * The [] operator with constant reference, the data of our matrix is just simple vector in 1D
      * @param i the index of the data vector element, it should start from 1, not 0!!!
      */
-    inline double operator[](const int &i)const{
+    inline double operator[](const int i)const{
         if(i<1||i>m_mn){
             MessagePrinter::printErrorTxt("i= "+to_string(i)+" is out of range(mn="+to_string(m_mn)+") in MatrixXd.h");
             MessagePrinter::exitAsFem();
@@ -142,7 +142,7 @@ public:
      * The '=' for equal operator
      * @param val the double type value to set up the whole matrix
      */
-    inline MatrixXd& operator=(const double &val){
+    inline MatrixXd& operator=(const double val){
         fill(m_vals.begin(),m_vals.end(),val);
         return *this;
     }
@@ -175,7 +175,7 @@ public:
      * The '+' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd operator+(const double &val)const{
+    inline MatrixXd operator+(const double val)const{
         MatrixXd temp(m_m,m_n);
         for(int i=0;i<m_mn;++i) temp.m_vals[i]=m_vals[i]+val;
         return temp;
@@ -201,7 +201,7 @@ public:
      * The '+=' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd& operator+=(const double &val){
+    inline MatrixXd& operator+=(const double val){
         for(int i=0;i<m_mn;++i) m_vals[i]=m_vals[i]+val;
         return *this;
     }
@@ -227,7 +227,7 @@ public:
      * The '-' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd operator-(const double &val)const{
+    inline MatrixXd operator-(const double val)const{
         MatrixXd temp(m_m,m_n);
         for(int i=0;i<m_mn;++i) temp.m_vals[i]=m_vals[i]-val;
         return temp;
@@ -253,7 +253,7 @@ public:
      * The '-=' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd& operator-=(const double &val){
+    inline MatrixXd& operator-=(const double val){
         for(int i=0;i<m_mn;++i) m_vals[i]=m_vals[i]-val;
         return *this;
     }
@@ -279,7 +279,7 @@ public:
      * The '*' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd operator*(const double &val)const{
+    inline MatrixXd operator*(const double val)const{
         MatrixXd temp(m_m,m_n);
         for(int i=0;i<m_mn;++i) temp.m_vals[i]=m_vals[i]*val;
         return temp;
@@ -333,7 +333,7 @@ public:
      * The '*=' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd& operator*=(const double &val){
+    inline MatrixXd& operator*=(const double val){
         for(int i=0;i<m_mn;++i) m_vals[i]=m_vals[i]*val;
         return *this;
     }
@@ -343,7 +343,7 @@ public:
      * The '/' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd operator/(const double &val)const{
+    inline MatrixXd operator/(const double val)const{
         if(abs(val)<1.0e-15){
             MessagePrinter::printErrorTxt("val="+to_string(val)+" is singular for / operator in MatrixXd");
             MessagePrinter::exitAsFem();
@@ -357,7 +357,7 @@ public:
      * The '/=' operator between matrix and scalar
      * @param val the right-hand side scalar (double type)
      */
-    inline MatrixXd& operator/=(const double &val){
+    inline MatrixXd& operator/=(const double val){
         if(abs(val)<1.0e-15){
             MessagePrinter::printErrorTxt("val="+to_string(val)+" is singular for / operator in MatrixXd");
             MessagePrinter::exitAsFem();

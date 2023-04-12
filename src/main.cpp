@@ -22,7 +22,6 @@
 int main(int args,char *argv[]){
     PetscErrorCode ierr;
     ierr=PetscInitialize(&args,&argv,NULL,NULL);if (ierr) return ierr;
-
     const PetscInt Year=2022;
     const PetscInt Month=10;
     const PetscInt Day=19;

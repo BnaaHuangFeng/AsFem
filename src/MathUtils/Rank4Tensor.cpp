@@ -13,13 +13,11 @@
 //+++ Purpose: Implement rank-4 tensor class for the common
 //+++          tensor manipulation in AsFem
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 #include "MathUtils/Rank4Tensor.h"
-
 Rank4Tensor::Rank4Tensor(){
     m_vals.resize(81,0.0);
 }
-Rank4Tensor::Rank4Tensor(const double &val){
+Rank4Tensor::Rank4Tensor(const double val){
     m_vals.resize(81,val);
 }
 Rank4Tensor::Rank4Tensor(const Rank4Tensor &a){

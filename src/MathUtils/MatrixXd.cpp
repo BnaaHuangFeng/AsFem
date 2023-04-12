@@ -27,12 +27,12 @@ MatrixXd::MatrixXd(const MatrixXd &a){
     m_m=a.m_m;m_n=a.m_n;
     m_mn=m_m*m_n;
 }
-MatrixXd::MatrixXd(const int &m,const int &n){
+MatrixXd::MatrixXd(const int  m,const int  n){
     m_m=m;m_n=n;
     m_mn=m*n;
     m_vals.resize(m_mn,0.0);
 }
-MatrixXd::MatrixXd(const int &m,const int &n,const double &val){
+MatrixXd::MatrixXd(const int  m,const int  n,const double val){
     m_m=m;m_n=n;
     m_mn=m*n;
     m_vals.resize(m_mn,val);

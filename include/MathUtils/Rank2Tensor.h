@@ -48,7 +48,7 @@ public:
      * constructor
      */
     Rank2Tensor();
-    Rank2Tensor(const double &val);
+    Rank2Tensor(const double val);
     Rank2Tensor(const Rank2Tensor &a);
     Rank2Tensor(const InitMethod &initmethod);
     ~Rank2Tensor();

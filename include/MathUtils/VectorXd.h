@@ -35,14 +35,14 @@ public:
      */
     VectorXd();
     VectorXd(const VectorXd &a);
-    VectorXd(const int &m);
-    VectorXd(const int &m,const double &val);
+    VectorXd(const int m);
+    VectorXd(const int m,const double val);
     
     /**
      * resize the vector
      * @param m the size of the vector
      */
-    void resize(const int &m){
+    void resize(const int m){
         m_vals.resize(m,0.0);m_m=m;
     }
     /**
@@ -50,7 +50,7 @@ public:
      * @param m the size of the vector
      * @param val the intial value of the resized vector
      */
-    void resize(const int &m,const double &val){
+    void resize(const int m,const double val){
         m_vals.resize(m,val);m_m=m;
     }
     /**
@@ -76,7 +76,7 @@ public:
      * () operator for the element access of the vector
      * @param i the index of the single element
      */
-    inline double& operator()(const int &i){
+    inline double& operator()(const int i){
         if(i<1||i>m_m){
             MessagePrinter::printErrorTxt("i="+to_string(i)+" is out of range(m="+to_string(m_m)+")");
             MessagePrinter::exitAsFem();
@@ -87,7 +87,7 @@ public:
      * const () operator for the elemenet access of the vector 
      * @param i the index of the single element
      */
-    inline double operator()(const int &i)const{
+    inline double operator()(const int i)const{
         if(i<1||i>m_m){
             MessagePrinter::printErrorTxt("i="+to_string(i)+" is out of range(m="+to_string(m_m)+")");
             MessagePrinter::exitAsFem();
@@ -102,7 +102,7 @@ public:
      * '=' operator for scalar
      * @param val right hand side scalar
      */
-    inline VectorXd& operator=(const double &val){
+    inline VectorXd& operator=(const double val){
         for(int i=0;i<m_m;++i) m_vals[i]=val;
         return *this;
     }
@@ -133,7 +133,7 @@ public:
      * '+' operator for scalar
      * @param val the right hand side scalar
      */
-    inline VectorXd operator+(const double &val){
+    inline VectorXd operator+(const double val){
         VectorXd temp(m_m);
         for(int i=0;i<m_m;++i) temp.m_vals[i]=m_vals[i]+val;
         return temp;
@@ -159,7 +159,7 @@ public:
      * '+=' operator for scalar
      * @param val the right hand side scalar
      */
-    inline VectorXd& operator+=(const double &val){
+    inline VectorXd& operator+=(const double val){
         for(int i=0;i<m_m;++i) m_vals[i]+=val;
         return *this;
     }
@@ -184,7 +184,7 @@ public:
      * '-' operator for scalar
      * @param val right hand side scalar value
      */
-    inline VectorXd operator-(const double &val){
+    inline VectorXd operator-(const double val){
         VectorXd temp(m_m);
         for(int i=0;i<m_m;++i) temp.m_vals[i]=m_vals[i]-val;
         return temp;
@@ -211,7 +211,7 @@ public:
      * '-' operator for scalar
      * @param val right hand side scalar
      */
-    inline VectorXd& operator-=(const double &val){
+    inline VectorXd& operator-=(const double val){
         for(int i=0;i<m_m;++i) m_vals[i]-=val;
         return *this;
     }
@@ -236,7 +236,7 @@ public:
      * '*' operator for scalar
      * @param val right hand side scalar
      */
-    inline VectorXd operator*(const double &val){
+    inline VectorXd operator*(const double val){
         VectorXd temp(m_m);
         for(int i=0;i<m_m;++i) temp.m_vals[i]=m_vals[i]*val;
         return temp;
@@ -246,7 +246,7 @@ public:
      * '*=' operator for scalar
      * @param val the right hand side scalar
      */
-    inline VectorXd& operator*=(const double &val){
+    inline VectorXd& operator*=(const double val){
         for(int i=0;i<m_m;++i) m_vals[i]*=val;
         return *this;
     }
@@ -256,7 +256,7 @@ public:
      * '/' operator for scalar
      * @param val right hand side scalar
      */
-    inline VectorXd operator/(const double &val){
+    inline VectorXd operator/(const double val){
         VectorXd temp(m_m);
         if(abs(val)<1.0e-16){
             MessagePrinter::printErrorTxt("val="+to_string(val)+" is singular for / operator in VectorXd");
@@ -270,7 +270,7 @@ public:
      * '/=' operator for scalar
      * @param val right hand side scalar
      */
-    inline VectorXd& operator/=(const double &val){
+    inline VectorXd& operator/=(const double val){
         if(abs(val)<1.0e-16){
             MessagePrinter::printErrorTxt("val="+to_string(val)+" is singular for /= operator in VectorXd");
             MessagePrinter::exitAsFem();

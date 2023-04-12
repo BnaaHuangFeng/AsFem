@@ -18,7 +18,7 @@
 Vector3d::Vector3d(){
     m_vals[0]=0.0;m_vals[1]=0.0;m_vals[2]=0.0;
 }
-Vector3d::Vector3d(const double &val){
+Vector3d::Vector3d(const double val){
     m_vals[0]=val;m_vals[1]=val;m_vals[2]=val;
 }
 Vector3d::Vector3d(const Vector3d &a){

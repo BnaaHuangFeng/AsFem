@@ -51,7 +51,7 @@ public:
      * constructor
      */
     Rank4Tensor();
-    Rank4Tensor(const double &val);
+    Rank4Tensor(const double val);
     Rank4Tensor(const Rank4Tensor &a);
     Rank4Tensor(const InitMethod &method);
     ~Rank4Tensor();
