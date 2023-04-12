@@ -1,3 +1,0 @@
-/home/c/github/AsFem/tests/MathUtils2d/CMakeFiles/rebuild_cache.dir
-/home/c/github/AsFem/tests/MathUtils2d/CMakeFiles/edit_cache.dir
-/home/c/github/AsFem/tests/MathUtils2d/CMakeFiles/asfem-test.dir
